@@ -37,6 +37,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+    	User::createAuthTablesIfNotExist();
         $this->middleware('guest');
     }
 

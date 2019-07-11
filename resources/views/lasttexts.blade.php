@@ -1,7 +1,8 @@
 	<br>
 	<b>Доступные тексты:</b>
 	<div class="itemsblock">
-		<?php
+	<?php
+	if (isset($pasta_res)) {
 		foreach ($pasta_res as $p) {
 			$dtexp = new DateTime($p->dtexp);
 			if (date_format($dtexp, "Y") > 3000) {
@@ -16,7 +17,8 @@
 			<i class="green">Добавлен:  <?=date_format(new DateTime($p->dtadd), "d.m.Y H:i:s")?></i>&nbsp;
 			<i class="red">Доступен до:  <?=$dtexp?></i>&nbsp;
 		</div>
-		<?php
+	<?php
 		} 
-		?>
+	}
+	?>
 	</div>

@@ -22,4 +22,7 @@ Route::post('/add', 'PastaController@addText');
 
 Route::get('/pasta{link}', 'PastaController@getText');
 
-?>
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

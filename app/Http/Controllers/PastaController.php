@@ -43,14 +43,15 @@ class PastaController extends BaseController
     public function getText($link = '') {
     	
     	$text = $this->_pasta->getText($link);
-    	$lasttexts = $this->_pasta->getLastTexts($text->id);
     	
     	if (!$text) {
     		return view('text', [
     				'notext' => 1,
-    				'pasta_res' => $lasttexts,
+    				'pasta_res' => false,
     				]);
     	} else {
+    		
+    		$lasttexts = $this->_pasta->getLastTexts($text->id);
     		
     		$text->dtadd = date_format(new DateTime($text->dtadd), "d.m.Y H:i:s");
     		

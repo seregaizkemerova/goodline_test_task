@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
@@ -27,6 +28,7 @@ class ForgotPasswordController extends Controller
      */
     public function __construct()
     {
+    	User::createAuthTablesIfNotExist();
         $this->middleware('guest');
     }
 }

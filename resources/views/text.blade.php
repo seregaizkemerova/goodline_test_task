@@ -1,4 +1,7 @@
-@include('head')
+@extends('layouts.app')
+    
+
+@section('content')
     
     <div class="container">
     	<a href="/">добавить новый текст</a>
@@ -23,5 +26,4 @@
     <?php endif;?>
     </div>
     
-    </body>
-</html>
+@endsection
