@@ -23,11 +23,9 @@ class PastaController extends BaseController
     
     
     public function index() {
-    	
-    	$lasttexts = $this->_pasta->getLastTexts();
-    	
     	return view('index', [
-    			'pasta_res' => $lasttexts,
+    			'pasta_res'       => $this->_pasta->getLastTexts(),
+    			'pasta_users_res' => $this->_pasta->getUserTexts(),
     			]);
     }
     
@@ -65,6 +63,8 @@ class PastaController extends BaseController
     		
     		if ($text->access == 'public') {
     			$text->access = 'доступен всем, виден в списках';
+    		} elseif($text->access == 'private') {
+    			$text->access = 'ТОЛЬКО АВТОРУ';
     		} else {
     			$text->access = 'доступен только по ссылке';
     		}
@@ -73,7 +73,8 @@ class PastaController extends BaseController
     		
 	    	return view('text', [
 	    			'text' => $text,
-	    			'pasta_res' => $lasttexts,
+	    			'pasta_res'       => $this->_pasta->getLastTexts($text->id),
+	    			'pasta_users_res' => $this->_pasta->getUserTexts(),
 	    			]);
     	}
     }

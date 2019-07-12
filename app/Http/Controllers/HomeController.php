@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Pasta;
 
 class HomeController extends Controller
 {
+	private $_pasta;
+	
     /**
      * Create a new controller instance.
      *
@@ -14,6 +17,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->_pasta = new Pasta();
     }
 
     /**
@@ -23,6 +27,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('home', [
+    			'pasta_pages' => $this->_pasta->getUserTextsPage(5),
+    			]);
     }
+    
 }

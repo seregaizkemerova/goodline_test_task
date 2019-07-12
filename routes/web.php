@@ -26,3 +26,5 @@ Route::get('/pasta{link}', 'PastaController@getText');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('soclogin', 'Auth\SocialAuthController@socLogin');

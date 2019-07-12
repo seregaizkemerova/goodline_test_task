@@ -58,4 +58,4 @@
 	<?php
 	}
 	?>
-	</div><?php /**PATH /var/www/html/goodline/goodline_testtask/resources/views/lasttexts.blade.php ENDPATH**/ ?>
+	</div>
