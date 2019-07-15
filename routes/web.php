@@ -22,6 +22,8 @@ Route::post('/add', 'PastaController@addText');
 
 Route::get('/pasta{link}', 'PastaController@getText');
 
+Route::get('/search', 'PastaController@search');
+
 
 Auth::routes();
 

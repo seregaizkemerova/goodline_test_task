@@ -66,3 +66,11 @@
             .hidden {
 				display: none;
             }
+            
+            .searchblock {
+            	padding: 10px;
+				border: 1px #c0c0c0 solid;
+            	border-radius: 5px;
+            	margin-bottom: 30px;
+            	margin-top: 10px;
+            }

@@ -26,6 +26,7 @@ class PastaController extends BaseController
     	return view('index', [
     			'pasta_res'       => $this->_pasta->getLastTexts(),
     			'pasta_users_res' => $this->_pasta->getUserTexts(),
+    			'searchtype'      => 1,
     			]);
     }
     
@@ -77,6 +78,15 @@ class PastaController extends BaseController
 	    			'pasta_users_res' => $this->_pasta->getUserTexts(),
 	    			]);
     	}
+    }
+    
+    
+    public function search(Request $request) {
+    	return view('search', [
+    			'pasta_res'  => $this->_pasta->searchTexts($request, 5),
+    			'search'     => $request->search,
+    			'searchtype' => $request->searchtype,
+    			]);
     }
 }
 

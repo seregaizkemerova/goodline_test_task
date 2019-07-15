@@ -9,6 +9,8 @@ use Illuminate\Database\Schema\Blueprint;
 use DateTime;
 use DateInterval;
 use DateTimeZone;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use Auth;
 
@@ -30,6 +32,9 @@ class Pasta extends Model
 				$table->string('access', 20);
 				$table->string('lang', 50);
 			});
+			//DB::statement('ALTER TABLE ' . $this->_table_name . ' ADD FULLTEXT  `title` (`title`)');
+			//DB::statement('ALTER TABLE ' . $this->_table_name . ' ADD FULLTEXT  `body` (`body`)');
+			//DB::statement('ALTER TABLE ' . $this->_table_name . ' ADD FULLTEXT  `titlebody` (`title`, `body`)');
 		}
 	}
     
@@ -39,6 +44,13 @@ class Pasta extends Model
 		//$str = str_replace("'", '', $str);
 		//$str = htmlspecialchars($str);
 		$str = addslashes($str);
+		return $str;
+	}
+	
+	private function getClearStrText($str = '') {
+		$str = str_replace('"', '', $str);
+		$str = str_replace("'", '', $str);
+		$str = htmlspecialchars($str);
 		return $str;
 	}
 	
@@ -74,6 +86,51 @@ class Pasta extends Model
 			} else {
 				return false;
 			}
+		} else {
+			return false;
+		}
+	}
+	
+	
+	public function arrayPaginator($array, $request, $cc)
+	{
+		$page = Input::get('page', 1);
+		$perPage = $cc;
+		$offset = ($page * $perPage) - $perPage;
+	
+		return new LengthAwarePaginator(array_slice($array, $offset, $perPage, true), count($array), $perPage, $page,
+				['path' => $request->url(), 'query' => $request->query()]);
+	}
+	
+	
+	public function searchTexts($request, $cc = 5) {
+		$searchword = $this->getClearStrText($request->search);
+		
+		$sql = ' SELECT id, link, title, dtadd, dtexp, access';
+		
+		if ($request->searchtype == 1) {
+			$where = ' (title LIKE "%' . $searchword . '%" OR body LIKE "%' . $searchword . '%")';
+		} elseif($request->searchtype == 2) {
+			$where = ' title LIKE "%' . $searchword . '%"';
+		} elseif($request->searchtype == 3) {
+			$where = ' body LIKE "%' . $searchword . '%"';
+		}
+		
+		$sql .= ' FROM ' . $this->_table_name . ' WHERE' . $where;
+		if (!empty(Auth::user()->id) ) {
+			$sql .= ' AND (user_id = "' . Auth::user()->id . '" OR (access = "public" AND dtexp >= NOW() ) )';
+		} else {
+			$sql .= ' AND access = "public" AND dtexp >= NOW()';
+		}
+		
+		$sql .= ' ORDER BY id DESC';
+		
+		$results = DB::select($sql);
+		
+		$paginator = $this->arrayPaginator($results, $request, $cc);
+		
+		if (isset($results) && count($results) > 0) {
+			return $paginator;
 		} else {
 			return false;
 		}
