@@ -4,6 +4,7 @@
 @section('content')
 <div class="container">
 
+	@include('partitial.searchform')
 
 	@include('partitial.addform')
 	
